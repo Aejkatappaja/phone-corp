@@ -3,17 +3,22 @@ import dotenv from "dotenv";
 import http from "http";
 import cors from "cors";
 import mongoose from "mongoose";
+import config from "./config";
+const morgan = require("morgan");
 
 dotenv.config({ path: "./.env" });
-const port = process.env.PORT;
+
 const mongoURL = process.env.MONGODB_URL;
 
-const product = require("./routes/product");
+const productRouter = require("./routes/api/product");
+
 const app: Express = express();
 app.use(express.json());
+app.use(morgan("dev"));
 
 app.use(cors({ credentials: true }));
-app.use(product);
+
+app.use(productRouter);
 
 const server = http.createServer(app);
 
@@ -21,9 +26,9 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to PhoneCorp API!");
 });
 
-server.listen(4000, () => {
+server.listen(config.port, () => {
   console.log(
-    `⚡️[server]: Server started 🚀 running at http://localhost:${port}`
+    `⚡️[server]: Server started 🚀 running at http://localhost:${config.port}`
   );
 });
 
