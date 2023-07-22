@@ -7,6 +7,7 @@ import express, { Express, Request, Response } from "express";
 const mongoose = require("./config/db.config");
 
 const productRouter = require("./routes/product");
+const orderRouter = require("./routes/order");
 
 const app: Express = express();
 
@@ -17,6 +18,7 @@ app.use(cors({ credentials: true }));
 const server = http.createServer(app);
 
 app.use(productRouter);
+app.use(orderRouter);
 
 app.get("/", (res: Response) => {
   return res.send("Welcome to PhoneCorp API !");

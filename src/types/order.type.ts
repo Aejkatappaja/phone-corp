@@ -3,7 +3,8 @@ import { IProduct } from "./product.type";
 
 export interface IOrder extends Document {
   product: Types.Array<IProduct>;
-  productsQuantity: number;
-  totalPrice: number;
+  employeeName: string;
+  orderProductQuantity: number;
+  totalOrderAmount: number;
   date: Date;
 }
