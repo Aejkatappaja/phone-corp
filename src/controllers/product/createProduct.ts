@@ -1,7 +1,6 @@
+import { createNewProduct } from "../../database/services/product.service";
 import { Request, Response } from "express";
 import { IProduct } from "../../types/product.type";
-import Product from "../../database/models/product.model";
-import { createNewProduct } from "../../database/services/product.service";
 
 export const createProduct = async (
   req: Request,

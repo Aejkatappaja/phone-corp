@@ -20,7 +20,7 @@ const server = http.createServer(app);
 app.use(productRouter);
 app.use(orderRouter);
 
-app.get("/", (res: Response) => {
+app.get("/", (req: Request, res: Response) => {
   return res.send("Welcome to PhoneCorp API !");
 });
 

@@ -2,55 +2,112 @@ import { Types } from "mongoose";
 import Order from "../../database/models/order.model";
 import Product from "../../database/models/product.model";
 import { Request, Response } from "express";
-import { getProductIdData } from "database/utils/product.utils";
+import { IOrder } from "../../types/order.type";
 
-export const createOrder = async (req: Request, res: Response) => {
+export const createOrder = async (
+  req: Request,
+  res: Response
+): Promise<Response<IOrder, Record<string, any>>> => {
   try {
-    const { employeeName, products } = req.body;
-    if (!products || !employeeName) {
-      return res.status(500).json({ message: "Something is missing" });
+    const { order } = req.body;
+    if (!order || !Array.isArray(order) || order.length === 0) {
+      return res.status(400).json({ message: "Invalid order data" });
     }
-    const productIds = products?.map(
-      (product: { productId: string }) => new Types.ObjectId(product.productId)
+
+    const productIdsWithQuantities = order.map(
+      (product: { productId: string; quantity: number }) => ({
+        productId: new Types.ObjectId(product.productId),
+        quantity: product.quantity,
+      })
     );
+
+    const productIds = productIdsWithQuantities.map((item) => item.productId);
 
     const existingProducts = await Product.find({ _id: { $in: productIds } });
 
-    // iteration on id array, call getProductIdData and check product for each iteration
-    console.log(existingProducts);
+    const foundProductIds = existingProducts.map((product) =>
+      product._id.toString()
+    );
+    const notFoundProductIds = productIds.filter(
+      (productId) => !foundProductIds.includes(productId.toString())
+    );
 
-    if (existingProducts.length !== productIds.length) {
-      return res.status(404).json({
-        message: "Certains produits n'existent pas en base de données.",
-      });
-    }
+    const orderItems = productIdsWithQuantities.map((item) => {
+      const existingProduct = existingProducts.find((product) =>
+        product._id.equals(item.productId)
+      );
+      if (existingProduct) {
+        const existingQuantity = existingProduct.quantity || 0;
+        const updatedQuantity = existingQuantity + item.quantity;
+        existingProduct.quantity = updatedQuantity;
 
-    const totalOrderAmount = products.reduce(
-      (total: number, product: { productId: string; quantity: number }) => {
-        const existingProduct = existingProducts.find(
-          (p) => p._id.toString() === product.productId
+        return {
+          product: existingProduct._id,
+          quantity: item.quantity,
+        };
+      }
+
+      return null;
+    });
+
+    let totalOrderValue = 0;
+    let totalOrderProductQuantity = 0;
+
+    orderItems.forEach((item) => {
+      if (item !== null) {
+        const existingProduct = existingProducts.find((product) =>
+          product._id.equals(item.product)
         );
-        return total + existingProduct.price * product.quantity;
-      },
-      0
-    );
-
-    const orderProductsQuantity = products.reduce(
-      (total: number, product: { quantity: number }) =>
-        total + product.quantity,
-      0
-    );
+        if (existingProduct) {
+          totalOrderValue += existingProduct.price * item.quantity;
+          totalOrderProductQuantity += item.quantity;
+        }
+      }
+    });
 
     const newOrder = new Order({
-      employeeName,
-      product: existingProducts,
-      totalOrderAmount,
-      orderProductsQuantity,
+      order: orderItems.filter((item) => item !== null), // Filter out null values (not found products)
+      orderValue: totalOrderValue,
+      productsQuantityOrdered: totalOrderProductQuantity,
     });
 
     await newOrder.save();
 
-    return res.status(201).json({ newOrder });
+    let informationMessage = "";
+    if (notFoundProductIds.length > 0) {
+      informationMessage = `Some products not found in the database and cannot be ordered: ${notFoundProductIds.join(
+        ", "
+      )}`;
+      console.log(informationMessage);
+    }
+
+    await Promise.all(existingProducts.map((product) => product.save()));
+
+    await Order.populate(newOrder, {
+      path: "order.product",
+      select: "brand model price",
+    });
+
+    const orderDataWithDateAndQuantities = {
+      ...newOrder.toObject(),
+      date: newOrder.date,
+      order: orderItems
+        .map((item) => {
+          if (item !== null) {
+            return {
+              productId: item.product.toString(),
+              quantity_ordered: item.quantity,
+            };
+          }
+        })
+        .filter((item) => item !== undefined),
+      orderValue: totalOrderValue,
+      productsQuantityOrdered: totalOrderProductQuantity,
+    };
+
+    return res
+      .status(201)
+      .json({ order: orderDataWithDateAndQuantities, informationMessage });
   } catch (e: unknown) {
     console.error(e);
     res.status(500).send(e);
