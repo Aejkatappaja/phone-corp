@@ -1,7 +1,20 @@
 import Product from "../models/product.model";
 import { IProduct } from "types/product.type";
 
-export const getAllProducts = (): Promise<IProduct[]> => Product.find();
+export const createNewProduct = async (
+  productInfos: IProduct
+): Promise<IProduct | null> => {
+  const existingProduct = await Product.findOne({ sku: productInfos.sku });
+  if (existingProduct) {
+    return null;
+  }
+  const newProduct = new Product(productInfos);
+  await newProduct.save();
+  return newProduct;
+};
+
+export const getAllProducts = (): Promise<IProduct[]> =>
+  Product.find().sort({ brand: 1 });
 
 export const getProductId = (id: string): Promise<IProduct> =>
   Product.findById(id);
@@ -33,6 +46,7 @@ const productService = {
   getTotalProductsReferences,
   getTotalProductsValue,
   getTotalProductsQuantity,
+  createNewProduct,
 };
 
 export default productService;

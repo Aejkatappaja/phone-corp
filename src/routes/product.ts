@@ -2,6 +2,7 @@ import {
   createProduct,
   getProductById,
   getProducts,
+  handleMissingProductId,
 } from "../controllers/product";
 import express from "express";
 
@@ -12,5 +13,7 @@ productRouter.post("/product/create", createProduct);
 productRouter.get("/product/stock", getProducts);
 
 productRouter.get("/product/:id", getProductById);
+
+productRouter.get("/product/", handleMissingProductId);
 
 module.exports = productRouter;

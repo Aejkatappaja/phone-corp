@@ -2,12 +2,14 @@ import { IProduct } from "types/product.type";
 import { ProductData } from "types/product.data.type";
 import productService from "../services/product.service";
 
-export const getProductData = async () => {
+export const getProductData = async (): Promise<ProductData> => {
   const products = await productService.getAllProducts();
+
   const productsTotalQuantity = await productService.getTotalProductsQuantity();
 
   const productsTotalReferences =
     await productService.getTotalProductsReferences();
+
   const stockValue = await productService.getTotalProductsValue();
 
   return {

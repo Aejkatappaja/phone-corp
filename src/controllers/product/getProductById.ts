@@ -20,3 +20,7 @@ export const getProductById = async (
     return res.status(500).send({ message: "Internal server error" });
   }
 };
+
+export const handleMissingProductId = (req: Request, res: Response) => {
+  return res.status(400).json({ message: "You need to provide an ID" });
+};
