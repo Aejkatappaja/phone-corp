@@ -3,7 +3,10 @@ import { IProduct } from "types/product.type";
 import { Request, Response } from "express";
 import { getProductIdData } from "../../database/utils/product.utils";
 
-export const getProductById = async (req: Request, res: Response) => {
+export const getProductById = async (
+  req: Request,
+  res: Response
+): Promise<Response<IProduct, Record<string, any>>> => {
   const productId = req.params.id;
   try {
     const product: IProduct = await getProductIdData(productId);
@@ -11,9 +14,9 @@ export const getProductById = async (req: Request, res: Response) => {
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     } else {
-      return res.status(200).json({ product });
+      return res.status(200).send({ product });
     }
-  } catch (e: unknown) {
-    return res.status(500).json({ message: "Internal server error" });
+  } catch (error: any) {
+    return res.status(500).send({ message: "Internal server error" });
   }
 };

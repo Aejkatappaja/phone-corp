@@ -1,16 +1,17 @@
-import Product from "../models/product.model"; // Assurez-vous d'avoir le bon chemin d'importation ici
+import Product from "../models/product.model";
 import { IProduct } from "types/product.type";
 
-export const getAllProducts = () => Product.find();
+export const getAllProducts = (): Promise<IProduct[]> => Product.find();
 
-export const getProductId = (id: string) => Product.findById(id);
+export const getProductId = (id: string): Promise<IProduct> =>
+  Product.findById(id);
 
-export const getTotalProductsReferences = async () => {
+export const getTotalProductsReferences = async (): Promise<number> => {
   const allProducts = await getAllProducts();
   return allProducts.length;
 };
 
-export const getTotalProductsValue = async () => {
+export const getTotalProductsValue = async (): Promise<number> => {
   const allProducts = await getAllProducts();
   return allProducts.reduce(
     (total: number, product: IProduct) => total + product.price,
@@ -18,7 +19,7 @@ export const getTotalProductsValue = async () => {
   );
 };
 
-export const getTotalProductsQuantity = async () => {
+export const getTotalProductsQuantity = async (): Promise<number> => {
   const allProducts = await getAllProducts();
   return allProducts.reduce(
     (total: number, product: IProduct) => total + product.quantity,

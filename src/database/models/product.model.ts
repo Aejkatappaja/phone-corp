@@ -7,6 +7,7 @@ const productSchema = new mongoose.Schema({
   sku: { type: Number, required: true },
   price: { type: Number, required: true },
   quantity: { type: Number, required: true },
+  // stock
 });
 
 const Product: Model<IProduct> = mongoose.model<IProduct>(

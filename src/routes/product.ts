@@ -7,9 +7,9 @@ import express from "express";
 
 const productRouter = express.Router();
 
-productRouter.get("/create-product", createProduct);
+productRouter.post("/product/create", createProduct);
 
-productRouter.get("/products", getProducts);
+productRouter.get("/product/stock", getProducts);
 
 productRouter.get("/product/:id", getProductById);
 

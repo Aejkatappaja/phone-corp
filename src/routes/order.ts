@@ -3,6 +3,8 @@ import express from "express";
 
 const orderRouter = express.Router();
 
-orderRouter.use("/create-order", createOrder);
+orderRouter.post("/order/create", createOrder);
+
+// orderRouter.get("/orders", getAllOrders);
 
 module.exports = orderRouter;
