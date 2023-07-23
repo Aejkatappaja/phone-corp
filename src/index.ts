@@ -28,3 +28,5 @@ server.listen(config.port, () => {
     `⚡️[server]: Server started 🚀 running at http://localhost:${config.port}`
   );
 });
+
+export default app;

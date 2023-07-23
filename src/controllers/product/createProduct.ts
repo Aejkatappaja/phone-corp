@@ -20,7 +20,7 @@ export const createProduct = async (
     if (!newProduct) {
       return res
         .status(409)
-        .json({ message: "Product with the same sku already exists" });
+        .json({ message: "Product with the same SKU already exists" });
     }
 
     return res.status(201).json(newProduct);

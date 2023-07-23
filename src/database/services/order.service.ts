@@ -1,8 +1,8 @@
 import Order from "../models/order.model";
 import { IOrder } from "../../types/order.type";
 
-export const getAllOrders = async (): Promise<IOrder[]> =>
-  await Order.find()
+export const getAllOrders = (): Promise<IOrder[]> =>
+  Order.find()
     .populate({ path: "order.product", select: "brand model" })
     .sort({ date: -1 })
     .lean();
