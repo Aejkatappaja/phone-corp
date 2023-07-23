@@ -13,8 +13,8 @@ export const createNewProduct = async (
   return newProduct;
 };
 
-export const getAllProducts = (): Promise<IProduct[]> =>
-  Product.find().sort({ brand: 1 });
+export const getAllProducts = async (): Promise<IProduct[]> =>
+  await Product.find().sort({ brand: 1 });
 
 export const getProductId = (id: string): Promise<IProduct> =>
   Product.findById(id);

@@ -66,7 +66,7 @@ export const createOrder = async (
     });
 
     const newOrder = new Order({
-      order: orderItems.filter((item) => item !== null), // Filter out null values (not found products)
+      order: orderItems.filter((item) => item !== null),
       orderValue: totalOrderValue,
       productsQuantityOrdered: totalOrderProductQuantity,
     });
@@ -108,8 +108,8 @@ export const createOrder = async (
     return res
       .status(201)
       .json({ order: orderDataWithDateAndQuantities, informationMessage });
-  } catch (e: unknown) {
-    console.error(e);
-    res.status(500).send(e);
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
   }
 };

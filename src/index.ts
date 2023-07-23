@@ -10,7 +10,6 @@ const productRouter = require("./routes/product");
 const orderRouter = require("./routes/order");
 
 const app: Express = express();
-
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors({ credentials: true }));
