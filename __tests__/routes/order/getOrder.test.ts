@@ -2,9 +2,9 @@ import request from "supertest";
 import app from "../../../src/index";
 import orderService from "../../../src/database/services/order.service";
 
-describe("getOrders route", () => {
+describe("GET /order/history route tests", () => {
   test("should return order data", async () => {
-    const response = await request(app).get("/orders");
+    const response = await request(app).get("/order/history");
 
     expect(response.status).toBe(200);
 
@@ -19,7 +19,7 @@ describe("getOrders route", () => {
       .spyOn(orderService, "getAllOrders")
       .mockRejectedValue(new Error("Database error"));
 
-    const response = await request(app).get("/orders");
+    const response = await request(app).get("/order/history");
 
     expect(response.status).toBe(500);
     expect(response.body).toHaveProperty("error", "Database error");

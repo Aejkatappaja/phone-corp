@@ -26,10 +26,12 @@ export const getTotalProductsReferences = async (): Promise<number> => {
 
 export const getTotalProductsValue = async (): Promise<number> => {
   const allProducts = await getAllProducts();
-  return allProducts.reduce(
-    (total: number, product: IProduct) => total + product.price,
+  const totalValue = allProducts.reduce(
+    (total: number, product: IProduct) =>
+      total + product.price * product.quantity,
     0
   );
+  return totalValue;
 };
 
 export const getTotalProductsQuantity = async (): Promise<number> => {

@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../../../src/index";
 
-describe("Product Service Tests", () => {
+describe("GET /product/:id routes tests", () => {
   test("should return a specific product by ID", async () => {
     const productId = "64b992dd857fbafa14af6cd7";
     const response = await request(app).get(`/product/${productId}`);

@@ -73,12 +73,11 @@ export const createOrder = async (
 
     await newOrder.save();
 
-    let informationMessage = "";
+    let alert = "";
     if (notFoundProductIds.length > 0) {
-      informationMessage = `Some products not found in the database and cannot be ordered: ${notFoundProductIds.join(
+      alert = `Some products not found in the database and cannot be ordered: ${notFoundProductIds.join(
         ", "
       )}`;
-      console.log(informationMessage);
     }
 
     await Promise.all(existingProducts.map((product) => product.save()));
@@ -89,9 +88,7 @@ export const createOrder = async (
     });
 
     const orderDataWithDateAndQuantities = {
-      ...newOrder.toObject(),
-      date: newOrder.date,
-      order: orderItems
+      items: orderItems
         .map((item) => {
           if (item !== null) {
             return {
@@ -101,13 +98,14 @@ export const createOrder = async (
           }
         })
         .filter((item) => item !== undefined),
+      date: newOrder.date,
       orderValue: totalOrderValue,
-      productsQuantityOrdered: totalOrderProductQuantity,
+      itemQuantityOrdered: totalOrderProductQuantity,
     };
 
     return res
       .status(201)
-      .json({ order: orderDataWithDateAndQuantities, informationMessage });
+      .json({ order: orderDataWithDateAndQuantities, alert });
   } catch (error: any) {
     console.error(error);
     res.status(500).send("Internal Server Error");

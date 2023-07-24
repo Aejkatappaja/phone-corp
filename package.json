@@ -8,8 +8,10 @@
     "test": "jest",
     "build": "tsc",
     "test:getOrder": "jest __tests__/routes/order/getOrder.test.ts",
+    "test:createOrder": "jest __tests__/routes/order/createOrder.test.ts",
     "test:getProductStock": "jest __tests__/routes/product/getProduct.test.ts",
-    "test:getProductById": "jest __tests__/routes/product/getProductById.test.ts"
+    "test:getProductById": "jest __tests__/routes/product/getProductById.test.ts",
+    "test:productFunc": "jest __tests__/functions/product/productFunc.test.ts"
   },
   "jest": {
     "testPathIgnorePatterns": [
@@ -45,6 +47,7 @@
     "@types/supertest": "^2.0.12",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "mongodb-memory-server": "^8.13.0",
     "mongoose": "^7.4.0"
   }
 }

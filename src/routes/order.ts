@@ -5,6 +5,6 @@ const orderRouter = express.Router();
 
 orderRouter.post("/order/create", createOrder);
 
-orderRouter.get("/orders", getOrders);
+orderRouter.get("/order/history", getOrders);
 
 module.exports = orderRouter;
