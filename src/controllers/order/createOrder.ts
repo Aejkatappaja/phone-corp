@@ -1,3 +1,4 @@
+// order.controller.ts
 import { Types } from "mongoose";
 import { Request, Response } from "express";
 import { IOrder } from "../../types/order.type";
@@ -64,6 +65,10 @@ export const createOrder = async (
         }
       }
     });
+
+    if (totalOrderProductQuantity === 0) {
+      return res.status(400).json({ message: "Invalid order data" });
+    }
 
     const newOrder = new Order({
       order: orderItems.filter((item) => item !== null),
