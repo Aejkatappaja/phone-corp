@@ -63,7 +63,6 @@ describe("POST /order/create routes test", () => {
   });
 
   test("should return 400 status and error message if the order data is invalid", async () => {
-    // Send a request with an empty order array
     const response = await request(app)
       .post("/order/create")
       .send({ order: [] })
@@ -73,7 +72,6 @@ describe("POST /order/create routes test", () => {
   });
 
   test("should return 400 status and error message if all order quantities are 0", async () => {
-    // Send a request with all order quantities set to 0
     const response = await request(app)
       .post("/order/create")
       .send({
