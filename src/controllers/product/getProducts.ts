@@ -1,7 +1,6 @@
-import { Response, Request } from "express";
-
 import { getProductData } from "../../database/utils/product.utils";
 import { ProductData } from "types/product.data.type";
+import { Response, Request } from "express";
 
 export const getProducts = async (
   req: Request,

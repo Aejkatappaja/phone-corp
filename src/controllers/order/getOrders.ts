@@ -1,5 +1,5 @@
-import { OrderData } from "../../types/order.data";
 import { Response, Request } from "express";
+import { OrderData } from "../../types/order.data";
 import { getOrderData } from "../../database/utils/order.utils";
 
 export const getOrders = async (

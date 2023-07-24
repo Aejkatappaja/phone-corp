@@ -3,18 +3,18 @@ import app from "../../../src/index";
 
 describe("GET /product/:id routes tests", () => {
   test("should return a specific product by ID", async () => {
-    const productId = "64b992dd857fbafa14af6cd7";
+    const productId = "64bed8f2687ae0df0d3675ff";
     const response = await request(app).get(`/product/${productId}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toMatchObject({
       product: {
-        _id: "64b992dd857fbafa14af6cd7",
-        brand: "Apple",
-        model: "iPhone 14",
-        sku: 47783400932,
-        price: 879,
-        quantity: 15,
+        _id: "64bed8f2687ae0df0d3675ff",
+        brand: "Samsun234234g",
+        model: "iPhone XR23424",
+        sku: 38934534566727,
+        price: 599,
+        quantity: 13,
         __v: 0,
       },
     });

@@ -1,5 +1,4 @@
 import { IProduct } from "types/product.type";
-
 import { Request, Response } from "express";
 import { getProductIdData } from "../../database/utils/product.utils";
 

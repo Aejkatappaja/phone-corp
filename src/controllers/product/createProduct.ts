@@ -1,6 +1,6 @@
-import { createNewProduct } from "../../database/services/product.service";
 import { Request, Response } from "express";
 import { IProduct } from "../../types/product.type";
+import { createNewProduct } from "../../database/services/product.service";
 
 export const createProduct = async (
   req: Request,
@@ -9,7 +9,13 @@ export const createProduct = async (
   try {
     const productInfos: IProduct = req.body;
 
-    if (Object.keys(productInfos).length < 4) {
+    if (
+      !productInfos.brand ||
+      !productInfos.model ||
+      !productInfos.sku ||
+      !productInfos.price ||
+      !productInfos.quantity
+    ) {
       return res
         .status(400)
         .json({ message: "You need to provide all the required informations" });

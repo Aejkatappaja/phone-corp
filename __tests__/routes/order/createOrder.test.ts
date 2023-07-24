@@ -1,7 +1,6 @@
-import Product from "../../../src/database/models/product.model";
-
 import request from "supertest";
 import app from "../../../src/index";
+import Product from "../../../src/database/models/product.model";
 
 describe("POST /order/create routes test", () => {
   test("should create a new order and return 201 status with correct data", async () => {

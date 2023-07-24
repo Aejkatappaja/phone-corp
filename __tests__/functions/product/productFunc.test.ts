@@ -1,7 +1,7 @@
-import productService from "../../../src/database/services/product.service";
-import { connect, disconnect } from "../../../src/jest.setup";
 import { IProduct } from "../../../src/types/product.type";
+import { connect, disconnect } from "../../../src/jest.setup";
 import Product from "../../../src/database/models/product.model";
+import productService from "../../../src/database/services/product.service";
 
 describe("Product Service Tests", () => {
   beforeAll(async () => {

@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import Order from "../../database/models/order.model";
-import Product from "../../database/models/product.model";
 import { Request, Response } from "express";
 import { IOrder } from "../../types/order.type";
+import Order from "../../database/models/order.model";
+import Product from "../../database/models/product.model";
 
 export const createOrder = async (
   req: Request,

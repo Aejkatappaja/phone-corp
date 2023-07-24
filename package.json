@@ -9,9 +9,11 @@
     "build": "tsc",
     "test:getOrder": "jest __tests__/routes/order/getOrder.test.ts",
     "test:createOrder": "jest __tests__/routes/order/createOrder.test.ts",
+    "test:createProduct": "jest __tests__/routes/product/createProduct.test.ts",
     "test:getProductStock": "jest __tests__/routes/product/getProduct.test.ts",
     "test:getProductById": "jest __tests__/routes/product/getProductById.test.ts",
-    "test:productFunc": "jest __tests__/functions/product/productFunc.test.ts"
+    "test:productFunc": "jest __tests__/functions/product/productFunc.test.ts",
+    "test:orderFunc": "jest __tests__/functions/order/orderFunc.test.ts"
   },
   "jest": {
     "testPathIgnorePatterns": [
