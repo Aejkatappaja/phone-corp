@@ -6,8 +6,8 @@ describe("POST /order/create routes test", () => {
   test("should create a new order and return 201 status with correct data", async () => {
     const validOrderData = {
       order: [
-        { productId: "64bed7ba2e4bcaa53af304f1", quantity: 2 },
-        { productId: "64bed7ba2e4bcaa53af304ef", quantity: 2 },
+        { productId: "64bed8f2687ae0df0d3675ff", quantity: 2 },
+        { productId: "64bed8f2687ae0df0d3675fd", quantity: 2 },
       ],
     };
 
@@ -62,23 +62,28 @@ describe("POST /order/create routes test", () => {
     );
   });
 
-  test("should return alert for products not found in the database", async () => {
-    const nonExistentProductOrder = {
-      productId: "64b991dc857fbafa14af6cd3",
-      quantity: 1,
-    };
-
-    const validOrderData = {
-      order: [nonExistentProductOrder],
-    };
-
+  test("should return 400 status and error message if the order data is invalid", async () => {
+    // Send a request with an empty order array
     const response = await request(app)
       .post("/order/create")
-      .send(validOrderData);
+      .send({ order: [] })
+      .expect(400);
 
-    expect(response.status).toBe(201);
-    expect(response.body.alert).toContain(
-      "Some products not found in the database"
-    );
+    expect(response.body.message).toBe("Invalid order data");
+  });
+
+  test("should return 400 status and error message if all order quantities are 0", async () => {
+    // Send a request with all order quantities set to 0
+    const response = await request(app)
+      .post("/order/create")
+      .send({
+        order: [
+          { productId: "product_id_1", quantity: 0 },
+          { productId: "product_id_2", quantity: 0 },
+        ],
+      })
+      .expect(400);
+
+    expect(response.body.message).toBe("Invalid order data");
   });
 });

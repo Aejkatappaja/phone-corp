@@ -14,7 +14,6 @@ describe("GET /product/:id routes tests", () => {
         model: "iPhone XR23424",
         sku: 38934534566727,
         price: 599,
-        quantity: 13,
         __v: 0,
       },
     });
