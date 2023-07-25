@@ -44,10 +44,15 @@ I decided to create this project trying to build some layers to be able to have 
 - I learned how to run tests properly and to test what seemed relevant to me.
 - I discovered [mongodb-memory-server](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) which is pretty good for testing interaction with database.
 
-## 💥 Encountered issues and how i solved them
+## 💥 Annoying encountered issues and how i solved them
 
-- Had troubles with `Jest` and `TypeScript` compatibility, my tests crashed everytime. </br></br>After some investigations
-  i discovered that i needed to install : </br> `babel/core` </br> `babel/preset-env` </br> `babel/preset-typescript` </br> </br>
+### <img src="https://www.vectorlogo.zone/logos/jestjsio/jestjsio-icon.svg" alt="jest" width="18" height="18"/> <u>Jest / TypeScript compatibility</u>
+
+- Had troubles with `Jest` and `TypeScript` compatibility, my tests crashed everytime. </br></br>
+- After some investigations
+  i discovered that i needed to install :
+  </br>
+  </br> `babel/core` </br> `babel/preset-env` </br> `babel/preset-typescript` </br> </br>
 - Create a `babel.config.js` file and put this inside :
 
 ```javascript
@@ -61,7 +66,7 @@ module.exports = {
 
 - Also create a `jest.config.js` and put this inside :
 
-```javascript
+```typescript
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   testEnvironment: "node",
@@ -69,3 +74,24 @@ module.exports = {
   transformIgnorePatterns: ["/node_modules/(?!(uuid)/)"],
 };
 ```
+
+### 🔊 <u>Address already in use when testing</u>
+
+- Had troubles running `npm test` because tests failed with this error message :
+
+```typescript
+listen EADDRINUSE: address already in use :::4008
+```
+
+- After some investigations i discovered that i needed to mention `(require.main === module) &&` condition in my `index.ts` :
+
+```typescript
+require.main === module &&
+  server.listen(config.port, () => {
+    console.log(
+      `⚡️[server]: Server started 🚀 running at http://localhost:${config.port}`
+    );
+  });
+```
+
+- With this condition the server won't force listening on port 4008 between each tests.
