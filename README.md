@@ -2,7 +2,7 @@
 
 ## 💬 &nbsp; About
 
-This is an exercise from the Tipsi interview process for Junior full-stack developers.</br>
+This is an exercise from a company interview process for Junior full-stack developers apply.</br>
 The goal of this exercise is to create a backend module for a phone company</br> to list products and create orders from them.
 
 ## ⚙️ &nbsp; Tech Stack
