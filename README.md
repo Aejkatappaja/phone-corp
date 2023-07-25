@@ -21,9 +21,10 @@ The goal of this exercise is to create a backend module for a phone company</br>
 ## ？How to run it
 
 1. `npm install` to install depencies.
-2. `npm start` to run the PhoneCorp system. The server will listen port `:4000`.
-3. `npm run test` to run tests.
-4. You can create a `.env` file and place `MONGODB_URL=` followed by your connection string provided by MongoDB to interact with your database.
+2. `npm run build` to proc `dist` folder.
+3. `npm start` to run the PhoneCorp system. The server will listen port `:4000`.
+4. `npm run test` to run tests.
+5. You can create a `.env` file and place `MONGODB_URL=` followed by your connection string provided by MongoDB to interact with your database.
 
 ## 📁 Architecture
 
@@ -35,14 +36,14 @@ The goal of this exercise is to create a backend module for a phone company</br>
 
 ## 🚏 Routes
 
-| Routes            | Methods |                           Function |
-| :---------------- | :-----: | ---------------------------------: |
-| `/product/create` |  POST   |                   Create a product |
-| `/product/stock`  |   GET   |         List all existing products |
-| `/product/:id`    |   GET   |      Retrieve a product with `:id` |
-| `/product/`       |   GET   | Handle error if `:id` not provided |
-| `/order/create`   |  POST   |                      Pass an order |
-| `/order/history`  |   GET   |                    List all orders |
+| Routes            | Methods |                                   Function |
+| :---------------- | :-----: | -----------------------------------------: |
+| `/product/create` |  POST   |                           Create a product |
+| `/product/stock`  |   GET   | List all existing products sorted by brand |
+| `/product/:id`    |   GET   |              Retrieve a product with `:id` |
+| `/product/`       |   GET   |         Handle error if `:id` not provided |
+| `/order/create`   |  POST   |                              Pass an order |
+| `/order/history`  |   GET   |             List all orders sorted by date |
 
 ### ？ How to use
 
@@ -92,6 +93,36 @@ http://localhost:4008/product/ folloed by existing database ID
 }
 ```
 
+### 🧱 Process
+
+- Sent all my request with `Postman` when working on the project and set up all my environment to be comfortable.
+  </br>
+
+<img src="https://rb.gy/3lzju" alt="jest" width="300" height="230"/>
+
+### ❌ Errors handling
+
+- When I created my routes i decided to handle some errors handlers :
+
+```typescript
+-product/create => 400(at least 1 product information not provided / quantity ordered is < 1)
+                   409(SKU already exists)
+                   500(errors)
+
+product/stock   => 500(errors)
+
+product/:id     => 404(ID not found in DB)
+                   500(error)
+
+product/        => 400(product/:id not provided)
+
+order/create    => 400(0 product placed on order / negative product quantity ordered)
+                   500(errors)
+                   alert(Object.JSON response: ID doesnt exists and cannot be placed in order)
+
+order/history   => 500(errors)
+```
+
 ## 🧪 Tests
 
 - I decided to use `Jest`, `SuperTest` and `mongodb-memory-server` to deal with testing.
@@ -118,6 +149,9 @@ http://localhost:4008/product/ folloed by existing database ID
 - Move all the functions contained in `getOrder.ts` to keep code cleaner and more maintenable.
 - Refactoring some parts of my code to be clearer and more modular.
 - Use a Schema Validator like `Zod` to avoid some possibles issues if the app growth.
+- Add an Auth, Login, Register and Roles.
+- Add a customer ID to track who passed orders.
+- Frontend interface.
 
 ## 🙇🏻 What did i learn, improve and discover
 
@@ -194,3 +228,4 @@ require.main === module &&
 - But I had to make choices because i lost a lot of times trying to refactor and deal with errors.
 - I started by establishing a little sketch on [`Excalidraw`](https://excalidraw.com/) and took some notes to define the logic, structure and path i wanted to create.
 - I improved my skills working on this project and i consider this as a really good point for me.
+- A little bit frustrated to had no time to create a little frontend interface to have something to show.
