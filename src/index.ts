@@ -23,12 +23,11 @@ app.get("/", (req: Request, res: Response) => {
   return res.send("Welcome to PhoneCorp API !");
 });
 
-if (require.main === module) {
+require.main === module &&
   server.listen(config.port, () => {
     console.log(
       `⚡️[server]: Server started 🚀 running at http://localhost:${config.port}`
     );
   });
-}
 
 export default app;
