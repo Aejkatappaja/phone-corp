@@ -15,14 +15,14 @@ The goal of this exercise is to create a backend module for a phone company</br>
 - Retrieve a specific product.
 - Place an order of products.
 - Display the list of orders.
-- Handle non-passing cases: What to do if the requested product does not exist ? What if the order contains products not present in the database ?
+- Handle non-passing cases: what to do if the requested product does not exist ? What if the order contains products not present in the database ?
 - Qualitatives tests and documentation should be written.
 
 ## ？How to run it
 
 1. `npm install` to install depencies.
 2. `npm start` to run the PhoneCorp system. The server will listen port `:4000`.
-3. `npm test` to run tests.
+3. `npm run test` to run tests.
 4. You can create a `.env` file and place `MONGODB_URL=` followed by your connection string provided by MongoDB to interact with your database.
 
 ## 📁 Architecture
@@ -46,20 +46,67 @@ The goal of this exercise is to create a backend module for a phone company</br>
 
 ### ？ How to use
 
-- For `/product/stock`, `product/` and `order/history` routes tou just have to send a `GET` request.
+- For `/product/stock`, `product/` and `order/history` routes, you just have to send a `GET` request.
   </br>
 
-- `/product/create` :
+- ### `/product/create` :
 
 ```javascript
 //example body to send to create a product
+
 {
-    "brand": "iPhone",
-    "model": "15 Pro Max",
-    "sku": 123456,
-    "price": 1599,
-    "quantity": 3
+    "brand": "iPhone", // string
+    "model": "15 Pro Max", // string
+    "sku": 123456, // number
+    "price": 1599, // number
+    "quantity": 3 // number
 }
+```
+
+- ### `/product/:id` :
+
+```javascript
+http://localhost:4008/product/ folloed by existing database ID
+```
+
+- ### `/order/create` :
+
+```javascript
+//example body to send to create an order
+
+// replace examples Id by existing database ID, anyway if you provide a wrong ID the response will alert you.
+
+{
+    "order": [
+        {
+            "productId": "64bed8f2687ae0df0d3675fd",
+            "quantity": 2
+        },
+           {
+            "productId": "64bed8f2687ae0df0d3675fd", "quantity": 2
+        },
+           {
+            "productId": "64bf01c275bc8f6ff962ae34", "quantity": 2
+        }
+    ]
+}
+```
+
+## 🧪 Tests
+
+- I decided to use `Jest`, `SuperTest` and `mongodb-memory-server` to deal with testing.
+- This setup is pretty efficient and not that hard to use.
+- I defined 33 tests which covers all the functions / API calls and DB interactions that i found relevant to test.
+- As explained you can run all tests by running `npm run test` or you can do this separately with the commands i created in `package.json` :
+
+```typescript
+ npm run test:getOrder
+ npm run test:createOrder
+ npm run test:createProduct
+ npm run test:getProductStock
+ npm run test:getProductById
+ npm run test:productFunc
+ npm run test:orderFunc
 ```
 
 ## 💪🏼 Possible improvements
@@ -77,6 +124,7 @@ The goal of this exercise is to create a backend module for a phone company</br>
 - I Improved my TypeScript's knowledges.
 - I improved my vision of project architecture.
 - I learned how to run tests properly and to test what seemed relevant to me.
+- I learned how to write and structure a well documented `README` file.
 - I discovered [mongodb-memory-server](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) which is pretty good for testing interaction with database.
 
 ## 💥 Annoying encountered issues and how i solved them
@@ -112,7 +160,7 @@ module.exports = {
 
 ### 🔊 <u>Address already in use when testing</u>
 
-- Had troubles running `npm test` because tests failed with this error message :
+- Had troubles running `npm run test` because tests failed with this error message :
 
 ```typescript
 listen EADDRINUSE: address already in use :::4008
@@ -138,3 +186,11 @@ require.main === module &&
 - Merged it when properly fixed.
 - Also had trouble trying to export functions outside of `getOrder.ts`, had a lot of `TypeScript` errors </br> and bugs and i lost too much time trying to clean this. </br>
 - It works well like that but it's kind of dirty part of my code, i should rework this later on !
+
+## 🔭 Conclusion
+
+- Working on this project was really exciting !
+- I tried my best but can do way better if i restart from scratch a second time. </br>
+- But I had to make choices because i lost a lot of times trying to refactor and deal with errors.
+- I started by establishing a little sketch on [`Excalidraw`](https://excalidraw.com/) and took some notes to define the logic, structure and path i wanted to create.
+- I improved my skills working on this project and i consider this as a really good point for me.
