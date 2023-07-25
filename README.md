@@ -21,10 +21,9 @@ The goal of this exercise is to create a backend module for a phone company</br>
 ## ？How to run it
 
 1. `npm install` to install depencies.
-2. `npm run build` to proc `dist` folder.
-3. `npm start` to run the PhoneCorp system. The server will listen port `:4000`.
-4. `npm run test` to run tests.
-5. You can create a `.env` file and place `MONGODB_URL=` followed by your connection string provided by MongoDB to interact with your database.
+2. `npm start` to run the PhoneCorp system. The server will listen port `:4000`.
+3. `npm run test` to run tests.
+4. You can create a `.env` file and place `MONGODB_URL=` followed by your connection string provided by MongoDB to interact with your database.
 
 ## 📁 Architecture
 
