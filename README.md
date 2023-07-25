@@ -180,7 +180,7 @@ module.exports = {
 };
 ```
 
-- Also create a `jest.config.js` and put this inside :
+- Also create a `jest.config.ts` and put this inside :
 
 ```typescript
 /** @type {import('ts-jest').JestConfigWithTsJest} */
