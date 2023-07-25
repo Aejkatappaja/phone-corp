@@ -84,4 +84,38 @@ describe("POST /order/create routes test", () => {
 
     expect(response.body.message).toBe("Invalid order data");
   });
+
+  test("should return 400 status and error message if all order quantities are < 1", async () => {
+    const response = await request(app)
+      .post("/order/create")
+      .send({
+        order: [
+          { productId: "product_id_1", quantity: -1 },
+          { productId: "product_id_2", quantity: 0 },
+        ],
+      })
+      .expect(400);
+
+    expect(response.body.message).toBe(
+      "Invalid product quantity. Quantity cannot be negative."
+    );
+  });
+
+  test("should return notFoundProductIds in the response message", async () => {
+    const nonExistentProductId = "64bed8f2687ae0df0d3675f1";
+
+    const orderData = {
+      order: [
+        { productId: nonExistentProductId, quantity: 2 },
+        { productId: "64bed8f2687ae0df0d3675fd", quantity: 2 },
+      ],
+    };
+
+    const response = await request(app).post("/order/create").send(orderData);
+
+    expect(response.status).toBe(201);
+    expect(response.body.alert).toBe(
+      `Some products not found in the database and cannot be ordered: ${nonExistentProductId}`
+    );
+  });
 });

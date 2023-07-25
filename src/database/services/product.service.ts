@@ -8,6 +8,7 @@ export const createNewProduct = async (
   if (existingProduct) {
     return null;
   }
+
   const newProduct = new Product(productInfos);
   await newProduct.save();
   return newProduct;

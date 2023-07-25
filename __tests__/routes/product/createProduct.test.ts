@@ -76,4 +76,26 @@ describe("Product Controller Tests", () => {
       message: "Product with the same SKU already exists",
     });
   });
+
+  test("should return 400 if product quantity created is < 1.", async () => {
+    const productData = {
+      brand: "Samsung",
+      model: "iPhone XR",
+      sku: 3894036727,
+      price: 599.0,
+      quantity: -13,
+    };
+
+    mockCreateNewProduct.mockResolvedValue(null);
+
+    const response = await request(app)
+      .post("/product/create")
+      .send(productData);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({
+      message:
+        "Invalid product quantity. Quantity must be greater than or equal to 1.",
+    });
+  });
 });

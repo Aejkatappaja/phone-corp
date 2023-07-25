@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
-    "test": "jest --watchAll --verbose --runInBand",
+    "test": "jest",
     "build": "tsc",
     "test:getOrder": "jest __tests__/routes/order/getOrder.test.ts",
     "test:createOrder": "jest __tests__/routes/order/createOrder.test.ts",

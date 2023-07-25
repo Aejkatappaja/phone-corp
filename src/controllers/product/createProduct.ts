@@ -21,6 +21,13 @@ export const createProduct = async (
         .json({ message: "You need to provide all the required informations" });
     }
 
+    if (productInfos.quantity < 1) {
+      return res.status(400).json({
+        message:
+          "Invalid product quantity. Quantity must be greater than or equal to 1.",
+      });
+    }
+
     const newProduct = await createNewProduct(productInfos);
 
     if (!newProduct) {

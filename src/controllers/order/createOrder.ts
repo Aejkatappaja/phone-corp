@@ -15,6 +15,18 @@ export const createOrder = async (
       return res.status(400).json({ message: "Invalid order data" });
     }
 
+    const isQuantityValid = order.every(
+      (product: { productId: string; quantity: number }) => {
+        return product.quantity >= 0;
+      }
+    );
+
+    if (!isQuantityValid) {
+      return res.status(400).json({
+        message: "Invalid product quantity. Quantity cannot be negative.",
+      });
+    }
+
     const productIdsWithQuantities = order.map(
       (product: { productId: string; quantity: number }) => ({
         productId: new Types.ObjectId(product.productId),
@@ -29,9 +41,14 @@ export const createOrder = async (
     const foundProductIds = existingProducts.map((product) =>
       product._id.toString()
     );
+
     const notFoundProductIds = productIds.filter(
       (productId) => !foundProductIds.includes(productId.toString())
     );
+
+    const alert = `Some products not found in the database and cannot be ordered: ${notFoundProductIds.join(
+      ", "
+    )}`;
 
     const orderItems = productIdsWithQuantities.map((item) => {
       const existingProduct = existingProducts.find((product) =>
@@ -78,13 +95,6 @@ export const createOrder = async (
 
     await newOrder.save();
 
-    let alert = "";
-    if (notFoundProductIds.length > 0) {
-      alert = `Some products not found in the database and cannot be ordered: ${notFoundProductIds.join(
-        ", "
-      )}`;
-    }
-
     await Promise.all(existingProducts.map((product) => product.save()));
 
     await Order.populate(newOrder, {
@@ -108,9 +118,10 @@ export const createOrder = async (
       itemQuantityOrdered: totalOrderProductQuantity,
     };
 
-    return res
-      .status(201)
-      .json({ order: orderDataWithDateAndQuantities, alert });
+    return res.status(201).json({
+      order: orderDataWithDateAndQuantities,
+      ...(notFoundProductIds.length > 0 && { alert }),
+    });
   } catch (error: any) {
     console.error(error);
     res.status(500).send("Internal Server Error");
